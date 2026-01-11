@@ -9,17 +9,7 @@
 
 %define tde_pkg kmyfirewall
 %define tde_prefix /opt/trinity
-%define tde_bindir %{tde_prefix}/bin
-%define tde_confdir %{_sysconfdir}/trinity
-%define tde_datadir %{tde_prefix}/share
-%define tde_docdir %{tde_datadir}/doc
-%define tde_includedir %{tde_prefix}/include
-%define tde_libdir %{tde_prefix}/%{_lib}
-%define tde_mandir %{tde_datadir}/man
-%define tde_tdeappdir %{tde_datadir}/applications/tde
-%define tde_tdedocdir %{tde_docdir}/tde
-%define tde_tdeincludedir %{tde_includedir}/tde
-%define tde_tdelibdir %{tde_libdir}/trinity
+
 
 %undefine __brp_remove_la_files
 %define dont_remove_libtool_files 1
@@ -41,30 +31,23 @@ URL:		http://www.trinitydesktop.org/
 
 License:	GPLv2+
 
-#Vendor:		Trinity Desktop
-#Packager:	Francois Andriot <francois.andriot@free.fr>
-
-Prefix:		%{tde_prefix}
 
 Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/settings/%{tarball_name}-%{tde_version}%{?preversion:~%{preversion}}.tar.xz
 Source1:		%{name}-rpmlintrc
 
 BuildSystem:    cmake
+
 BuildOption:    -DCMAKE_BUILD_TYPE="RelWithDebInfo"
-BuildOption:    -DCMAKE_SKIP_RPATH=OFF
-BuildOption:    -DCMAKE_SKIP_INSTALL_RPATH=OFF
-BuildOption:    -DCMAKE_BUILD_WITH_INSTALL_RPATH=ON
-BuildOption:    -DCMAKE_INSTALL_RPATH="%{tde_libdir}"
 BuildOption:    -DCMAKE_INSTALL_PREFIX=%{tde_prefix}
-BuildOption:    -DINCLUDE_INSTALL_DIR=%{tde_tdeincludedir}
-BuildOption:    -DDATA_INSTALL_DIR=%{tde_datadir}/apps
-BuildOption:    -DMIME_INSTALL_DIR=%{tde_datadir}/mimelnk
-BuildOption:    -DXDG_APPS_INSTALL_DIR=%{tde_tdeappdir}
-BuildOption:    -DSHARE_INSTALL_PREFIX="%{tde_datadir}"
-BuildOption:    -DDOC_INSTALL_DIR=%{tde_tdedocdir}
-BuildOption:    -DLIB_INSTALL_DIR=%{tde_libdir}
+BuildOption:    -DINCLUDE_INSTALL_DIR=%{tde_prefix}/include/tde
+BuildOption:    -DDATA_INSTALL_DIR=%{tde_prefix}/share/apps
+BuildOption:    -DMIME_INSTALL_DIR=%{tde_prefix}/share/mimelnk
+BuildOption:    -DXDG_APPS_INSTALL_DIR=%{tde_prefix}/share/applications/tde
+BuildOption:    -DSHARE_INSTALL_PREFIX=%{tde_prefix}/share
+BuildOption:    -DDOC_INSTALL_DIR=%{tde_prefix}/share/doc/tde
 BuildOption:    -DBUILD_DOC=ON
 BuildOption:    -DBUILD_ALL=ON
+BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
 BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
 BuildRequires:	trinity-tdebase-devel >= %{tde_version}
@@ -98,64 +81,64 @@ university etc.)
 %files
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING COPYING-DOCS README TODO
-%{tde_bindir}/kmyfirewall
-%{tde_libdir}/libkmfcore.so.*
-%{tde_libdir}/libkmfwidgets.so.*
-%{tde_tdelibdir}/libkmfcompiler_ipt.la
-%{tde_tdelibdir}/libkmfcompiler_ipt.so
-%{tde_tdelibdir}/libkmfgenericinterfacepart.la
-%{tde_tdelibdir}/libkmfgenericinterfacepart.so
-%{tde_tdelibdir}/libkmfinstaller_linux.la
-%{tde_tdelibdir}/libkmfinstaller_linux.so
-%{tde_tdelibdir}/libkmfinstallerplugin.la
-%{tde_tdelibdir}/libkmfinstallerplugin.so
-%{tde_tdelibdir}/libkmfipteditorpart.la
-%{tde_tdelibdir}/libkmfipteditorpart.so
-%{tde_tdelibdir}/libkmfruleoptionedit_custom.la
-%{tde_tdelibdir}/libkmfruleoptionedit_custom.so
-%{tde_tdelibdir}/libkmfruleoptionedit_interface.la
-%{tde_tdelibdir}/libkmfruleoptionedit_interface.so
-%{tde_tdelibdir}/libkmfruleoptionedit_ip.la
-%{tde_tdelibdir}/libkmfruleoptionedit_ip.so
-%{tde_tdelibdir}/libkmfruleoptionedit_limit.la
-%{tde_tdelibdir}/libkmfruleoptionedit_limit.so
-%{tde_tdelibdir}/libkmfruleoptionedit_mac.la
-%{tde_tdelibdir}/libkmfruleoptionedit_mac.so
-%{tde_tdelibdir}/libkmfruleoptionedit_protocol.la
-%{tde_tdelibdir}/libkmfruleoptionedit_protocol.so
-%{tde_tdelibdir}/libkmfruleoptionedit_state.la
-%{tde_tdelibdir}/libkmfruleoptionedit_state.so
-%{tde_tdelibdir}/libkmfruleoptionedit_tos.la
-%{tde_tdelibdir}/libkmfruleoptionedit_tos.so
-%{tde_tdelibdir}/libkmfruletargetoptionedit_log.la
-%{tde_tdelibdir}/libkmfruletargetoptionedit_log.so
-%{tde_tdelibdir}/libkmfruletargetoptionedit_mark.la
-%{tde_tdelibdir}/libkmfruletargetoptionedit_mark.so
-%{tde_tdelibdir}/libkmfruletargetoptionedit_nat.la
-%{tde_tdelibdir}/libkmfruletargetoptionedit_nat.so
-%{tde_tdelibdir}/libkmfruletargetoptionedit_tos.la
-%{tde_tdelibdir}/libkmfruletargetoptionedit_tos.so
-%{tde_tdeappdir}/kmyfirewall.desktop
-%{tde_datadir}/apps/kmfgenericinterfacepart/
-%{tde_datadir}/apps/kmfipteditorpart/
-%{tde_datadir}/apps/kmfsystray/
-%{tde_datadir}/apps/kmyfirewall/
-%{tde_datadir}/config.kcfg/kmfconfig.kcfg
+%{tde_prefix}/bin/kmyfirewall
+%{tde_prefix}/%{_lib}/libkmfcore.so.*
+%{tde_prefix}/%{_lib}/libkmfwidgets.so.*
+%{tde_prefix}/%{_lib}/trinity/libkmfcompiler_ipt.la
+%{tde_prefix}/%{_lib}/trinity/libkmfcompiler_ipt.so
+%{tde_prefix}/%{_lib}/trinity/libkmfgenericinterfacepart.la
+%{tde_prefix}/%{_lib}/trinity/libkmfgenericinterfacepart.so
+%{tde_prefix}/%{_lib}/trinity/libkmfinstaller_linux.la
+%{tde_prefix}/%{_lib}/trinity/libkmfinstaller_linux.so
+%{tde_prefix}/%{_lib}/trinity/libkmfinstallerplugin.la
+%{tde_prefix}/%{_lib}/trinity/libkmfinstallerplugin.so
+%{tde_prefix}/%{_lib}/trinity/libkmfipteditorpart.la
+%{tde_prefix}/%{_lib}/trinity/libkmfipteditorpart.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_custom.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_custom.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_interface.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_interface.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_ip.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_ip.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_limit.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_limit.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_mac.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_mac.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_protocol.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_protocol.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_state.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_state.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_tos.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruleoptionedit_tos.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_log.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_log.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_mark.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_mark.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_nat.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_nat.so
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_tos.la
+%{tde_prefix}/%{_lib}/trinity/libkmfruletargetoptionedit_tos.so
+%{tde_prefix}/share/applications/tde/kmyfirewall.desktop
+%{tde_prefix}/share/apps/kmfgenericinterfacepart/
+%{tde_prefix}/share/apps/kmfipteditorpart/
+%{tde_prefix}/share/apps/kmfsystray/
+%{tde_prefix}/share/apps/kmyfirewall/
+%{tde_prefix}/share/config.kcfg/kmfconfig.kcfg
 %config(noreplace) %{_sysconfdir}/kmyfirewallrc
-%{tde_tdedocdir}/HTML/en/kmyfirewall/
-%{tde_datadir}/icons/hicolor/*/apps/kmyfirewall.png
-%{tde_datadir}/icons/locolor/*/apps/kmyfirewall.png
-%{tde_datadir}/mimelnk/application/kmfgrs.desktop
-%{tde_datadir}/mimelnk/application/kmfnet.desktop
-%{tde_datadir}/mimelnk/application/kmfpkg.desktop
-%{tde_datadir}/mimelnk/application/kmfrs.desktop
-%{tde_datadir}/services/kmf*.desktop
-%{tde_datadir}/servicetypes/kmf*.desktop
-%{tde_mandir}/man1/kmyfirewall.1*
-%lang(it) %{tde_datadir}/locale/it/LC_MESSAGES/kmfsystray.mo
-%lang(ka) %{tde_datadir}/locale/ka/LC_MESSAGES/kmfsystray.mo
-%lang(nl) %{tde_datadir}/locale/nl/LC_MESSAGES/kmfsystray.mo
-%lang(nl) %{tde_datadir}/locale/nl/LC_MESSAGES/kmyfirewall.mo
+%{tde_prefix}/share/doc/tde/HTML/en/kmyfirewall/
+%{tde_prefix}/share/icons/hicolor/*/apps/kmyfirewall.png
+%{tde_prefix}/share/icons/locolor/*/apps/kmyfirewall.png
+%{tde_prefix}/share/mimelnk/application/kmfgrs.desktop
+%{tde_prefix}/share/mimelnk/application/kmfnet.desktop
+%{tde_prefix}/share/mimelnk/application/kmfpkg.desktop
+%{tde_prefix}/share/mimelnk/application/kmfrs.desktop
+%{tde_prefix}/share/services/kmf*.desktop
+%{tde_prefix}/share/servicetypes/kmf*.desktop
+%{tde_prefix}/share/man/man1/kmyfirewall.1*
+%lang(it) %{tde_prefix}/share/locale/it/LC_MESSAGES/kmfsystray.mo
+%lang(ka) %{tde_prefix}/share/locale/ka/LC_MESSAGES/kmfsystray.mo
+%lang(nl) %{tde_prefix}/share/locale/nl/LC_MESSAGES/kmfsystray.mo
+%lang(nl) %{tde_prefix}/share/locale/nl/LC_MESSAGES/kmyfirewall.mo
 
 ##########
 
@@ -168,20 +151,20 @@ Requires:		%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
 %{summary}
 
 %files devel
-%{tde_tdeincludedir}/kmyfirewall
-%{tde_libdir}/libkmfcore.la
-%{tde_libdir}/libkmfcore.so
-%{tde_libdir}/libkmfwidgets.la
-%{tde_libdir}/libkmfwidgets.so
+%{tde_prefix}/include/tde/kmyfirewall
+%{tde_prefix}/%{_lib}/libkmfcore.la
+%{tde_prefix}/%{_lib}/libkmfcore.so
+%{tde_prefix}/%{_lib}/libkmfwidgets.la
+%{tde_prefix}/%{_lib}/libkmfwidgets.so
 
 
 %conf -p
 unset QTDIR QTINC QTLIB
-export PATH="%{tde_bindir}:${PATH}"
-export PKG_CONFIG_PATH="%{tde_libdir}/pkgconfig"
+export PATH="%{tde_prefix}/bin:${PATH}"
+export PKG_CONFIG_PATH="%{tde_prefix}/%{_lib}/pkgconfig"
 
 
 %install -a
 # Remove unwanted pixmaps
-%__rm -rf "%{buildroot}%{tde_datadir}/pixmaps/"
+%__rm -rf "%{buildroot}%{tde_prefix}/share/pixmaps/"
 
