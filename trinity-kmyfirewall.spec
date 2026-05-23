@@ -1,10 +1,6 @@
 %bcond clang 1
 
 # TDE variables
-%if "%{?tde_version}" == ""
-%define tde_version 14.1.5
-%endif
-
 %define tde_pkg kmyfirewall
 %define tde_prefix /opt/trinity
 
@@ -14,14 +10,14 @@
 %define _disable_rebuild_configure 1
 
 # fixes error: Empty %files file …/debugsourcefiles.list
-%define _debugsource_template %{nil}
+%undefine _debugsource_template
 
 %define tarball_name %{tde_pkg}-trinity
 
 
 Name:		trinity-%{tde_pkg}
-Version:	1.1.1
-Release:	%{?tde_version:%{tde_version}_}3
+Version:	14.1.6
+Release:	1
 Summary:	Iptables based firewall configuration tool for TDE
 Group:		Applications/Utilities
 URL:		http://www.trinitydesktop.org/
@@ -29,7 +25,7 @@ URL:		http://www.trinitydesktop.org/
 License:	GPLv2+
 
 
-Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{tde_version}/main/applications/settings/%{tarball_name}-%{tde_version}.tar.xz
+Source0:		https://mirror.ppa.trinitydesktop.org/trinity/releases/R%{version}/main/applications/settings/%{tarball_name}-%{version}.tar.xz
 Source1:		%{name}-rpmlintrc
 
 BuildSystem:    cmake
@@ -46,9 +42,10 @@ BuildOption:    -DBUILD_DOC=ON
 BuildOption:    -DBUILD_ALL=ON
 BuildOption:    -DWITH_GCC_VISIBILITY=%{!?with_clang:ON}%{?with_clang:OFF}
 
-BuildRequires:	trinity-tdelibs-devel >= %{tde_version}
-BuildRequires:	trinity-tdebase-devel >= %{tde_version}
-BuildRequires:  trinity-tde-cmake >= %{tde_version}
+BuildRequires:	trinity-tdelibs-devel >= %{version}
+BuildRequires:	trinity-tdebase-devel >= %{version}
+BuildRequires:  trinity-tde-cmake >= %{version}
+
 BuildRequires:	desktop-file-utils
 
 BuildRequires:	autoconf automake libtool m4
@@ -76,7 +73,7 @@ configure your rule set one time and then you can use it on several computers
 giving each of them a similar configuration (p.e. school networks, office,
 university etc.)
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc AUTHORS ChangeLog COPYING COPYING-DOCS README TODO
 %{tde_prefix}/bin/kmyfirewall
@@ -133,17 +130,13 @@ university etc.)
 %{tde_prefix}/share/services/kmf*.desktop
 %{tde_prefix}/share/servicetypes/kmf*.desktop
 %{tde_prefix}/share/man/man1/kmyfirewall.1*
-%lang(it) %{tde_prefix}/share/locale/it/LC_MESSAGES/kmfsystray.mo
-%lang(ka) %{tde_prefix}/share/locale/ka/LC_MESSAGES/kmfsystray.mo
-%lang(nl) %{tde_prefix}/share/locale/nl/LC_MESSAGES/kmfsystray.mo
-%lang(nl) %{tde_prefix}/share/locale/nl/LC_MESSAGES/kmyfirewall.mo
 
 ##########
 
 %package devel
 Summary:		Development files for %{name}
 Group:			Development/Libraries
-Requires:		%{name} = %{?epoch:%{epoch}:}%{version}-%{release}
+Requires:		%{name} = %{EVRD}
 
 %description devel
 %{summary}
